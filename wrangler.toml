@@ -1,0 +1,8 @@
+name = "mein-blog-frontend"
+compatibility_flags = ["nodejs_compat"]
+
+[build]
+command = "npx @cloudflare/next-on-pages@1"
+
+[build.upload]
+dir = ".vercel/output/static"
