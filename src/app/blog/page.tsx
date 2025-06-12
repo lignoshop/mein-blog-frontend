@@ -1,4 +1,6 @@
 // src/app/blog/page.tsx
+import Link from 'next/link';
+
 interface BlogPost {
   id: number;
   documentId: string;
@@ -82,12 +84,12 @@ export default async function BlogPage() {
       </div>
       
       <div className="mt-8 text-center">
-        <a 
+        <Link 
           href="/" 
           className="inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition-colors"
         >
           ← Zurück zur Startseite
-        </a>
+        </Link>
       </div>
     </div>
   );
