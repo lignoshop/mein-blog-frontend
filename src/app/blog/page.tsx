@@ -1,6 +1,8 @@
 // src/app/blog/page.tsx
 import Link from 'next/link';
 
+export const runtime = 'edge';
+
 interface BlogPost {
   id: number;
   documentId: string;
