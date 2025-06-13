@@ -52,107 +52,192 @@ export default async function BlogPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <div style={{ 
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)'
+    }}>
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white">
-        <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
-              Mein Blog
-            </h1>
-            <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
-              Gedanken, Ideen und Geschichten aus der digitalen Welt
-            </p>
-            <div className="mt-8 flex justify-center">
-              <div className="bg-white/20 backdrop-blur-sm rounded-full px-6 py-3 text-sm font-medium">
-                {posts.length} {posts.length === 1 ? 'Artikel' : 'Artikel'}
-              </div>
-            </div>
+      <div style={{
+        background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #6366f1 100%)',
+        color: 'white',
+        padding: '4rem 1rem',
+        textAlign: 'center'
+      }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <h1 style={{
+            fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+            fontWeight: 'bold',
+            marginBottom: '1.5rem',
+            background: 'linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text'
+          }}>
+            Mein Blog
+          </h1>
+          <p style={{
+            fontSize: '1.25rem',
+            marginBottom: '2rem',
+            opacity: '0.9',
+            maxWidth: '600px',
+            margin: '0 auto 2rem'
+          }}>
+            Gedanken, Ideen und Geschichten aus der digitalen Welt
+          </p>
+          <div style={{
+            display: 'inline-block',
+            background: 'rgba(255,255,255,0.2)',
+            backdropFilter: 'blur(10px)',
+            padding: '0.75rem 1.5rem',
+            borderRadius: '2rem',
+            fontSize: '0.9rem',
+            fontWeight: '500'
+          }}>
+            {posts.length} {posts.length === 1 ? 'Artikel' : 'Artikel'}
           </div>
         </div>
       </div>
 
-      {/* Content Section */}
-      <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
+      {/* Content */}
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '4rem 1rem' }}>
         {error && (
-          <div className="mb-12 bg-red-50 border-l-4 border-red-400 p-6 rounded-r-lg">
-            <div className="flex">
-              <div className="flex-shrink-0">
-                <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                </svg>
-              </div>
-              <div className="ml-3">
-                <h3 className="text-red-800 font-medium">Fehler beim Laden der Artikel</h3>
-                <p className="text-red-700 mt-1">{error}</p>
-              </div>
-            </div>
+          <div style={{
+            background: '#fef2f2',
+            borderLeft: '4px solid #f87171',
+            padding: '1rem',
+            marginBottom: '2rem',
+            borderRadius: '0.5rem'
+          }}>
+            <strong style={{ color: '#dc2626' }}>Fehler:</strong>
+            <span style={{ color: '#991b1b', marginLeft: '0.5rem' }}>{error}</span>
           </div>
         )}
-        
+
         {posts.length === 0 && !error && (
-          <div className="text-center py-16">
-            <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            <h3 className="mt-4 text-lg font-medium text-gray-900">Noch keine Artikel</h3>
-            <p className="mt-2 text-gray-500">Bald gibt es hier spannende Inhalte zu entdecken!</p>
+          <div style={{ textAlign: 'center', padding: '4rem 0' }}>
+            <p style={{ color: '#6b7280', fontSize: '1.1rem' }}>
+              Keine Blog-Posts gefunden.
+            </p>
           </div>
         )}
-        
-        {/* Blog Posts Grid */}
-        <div className="grid gap-8 md:gap-12 lg:grid-cols-2 xl:grid-cols-3">
+
+        {/* Blog Grid */}
+        <div style={{
+          display: 'grid',
+          gap: '2rem',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))'
+        }}>
           {posts.map((post, index) => (
             <article 
-              key={post.id} 
-              className="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-500 hover:-translate-y-2"
+              key={post.id}
+              style={{
+                background: 'white',
+                borderRadius: '1rem',
+                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                overflow: 'hidden',
+                transition: 'all 0.3s ease',
+                border: '1px solid #e5e7eb'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-8px)';
+                e.currentTarget.style.boxShadow = '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+              }}
             >
-              {/* Post Header */}
-              <div className="p-8">
-                {/* Category Badge */}
-                <div className="flex items-center justify-between mb-4">
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-blue-100 to-purple-100 text-blue-800 group-hover:from-blue-200 group-hover:to-purple-200 transition-colors duration-300">
+              <div style={{ padding: '2rem' }}>
+                {/* Header */}
+                <div style={{ 
+                  display: 'flex', 
+                  justifyContent: 'space-between', 
+                  alignItems: 'center',
+                  marginBottom: '1rem'
+                }}>
+                  <span style={{
+                    background: 'linear-gradient(135deg, #ddd6fe 0%, #c7d2fe 100%)',
+                    color: '#4338ca',
+                    padding: '0.25rem 0.75rem',
+                    borderRadius: '1rem',
+                    fontSize: '0.75rem',
+                    fontWeight: '500'
+                  }}>
                     Artikel #{index + 1}
                   </span>
-                  <div className="text-sm text-gray-500">
+                  <span style={{ fontSize: '0.875rem', color: '#6b7280' }}>
                     {new Date(post.Date).toLocaleDateString('de-DE')}
-                  </div>
+                  </span>
                 </div>
 
                 {/* Title */}
-                <h2 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition-colors duration-300 line-clamp-2">
+                <h2 style={{
+                  fontSize: '1.5rem',
+                  fontWeight: 'bold',
+                  color: '#1f2937',
+                  marginBottom: '1rem',
+                  lineHeight: '1.3'
+                }}>
                   {post.Text}
                 </h2>
-                
-                {/* Content Preview */}
-                <div className="text-gray-600 mb-6 line-clamp-3 leading-relaxed">
+
+                {/* Content */}
+                <p style={{
+                  color: '#6b7280',
+                  marginBottom: '1.5rem',
+                  lineHeight: '1.6'
+                }}>
                   {post.Content.length > 120 
                     ? `${post.Content.substring(0, 120)}...` 
                     : post.Content
                   }
-                </div>
+                </p>
 
-                {/* Read More Button */}
-                <div className="flex items-center justify-between">
-                  <button className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium group-hover:translate-x-1 transition-all duration-300">
-                    Weiterlesen
-                    <svg className="ml-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
+                {/* Footer */}
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center'
+                }}>
+                  <button style={{
+                    background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+                    color: 'white',
+                    padding: '0.75rem 1.5rem',
+                    borderRadius: '0.5rem',
+                    border: 'none',
+                    fontWeight: '500',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'scale(1.05)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'scale(1)';
+                  }}>
+                    Weiterlesen →
                   </button>
                   
-                  {/* Reading time estimate */}
-                  <span className="text-sm text-gray-400">
+                  <span style={{ fontSize: '0.875rem', color: '#9ca3af' }}>
                     {Math.max(1, Math.ceil(post.Content.split(' ').length / 200))} Min.
                   </span>
                 </div>
               </div>
 
               {/* Post Footer */}
-              <div className="px-8 py-4 bg-gray-50 border-t border-gray-100">
-                <div className="flex items-center justify-between text-sm text-gray-500">
+              <div style={{
+                background: '#f9fafb',
+                padding: '1rem 2rem',
+                borderTop: '1px solid #e5e7eb'
+              }}>
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  fontSize: '0.875rem',
+                  color: '#6b7280'
+                }}>
                   <span>Veröffentlicht</span>
-                  <time dateTime={post.publishedAt}>
+                  <time>
                     {new Date(post.publishedAt).toLocaleDateString('de-DE', {
                       day: 'numeric',
                       month: 'short',
@@ -165,16 +250,31 @@ export default async function BlogPage() {
           ))}
         </div>
 
-        {/* Back to Home */}
-        <div className="mt-16 text-center">
+        {/* Back Button */}
+        <div style={{ textAlign: 'center', marginTop: '4rem' }}>
           <Link 
-            href="/" 
-            className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-full hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+            href="/"
+            style={{
+              display: 'inline-block',
+              background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+              color: 'white',
+              padding: '1rem 2rem',
+              borderRadius: '2rem',
+              textDecoration: 'none',
+              fontWeight: '500',
+              transition: 'all 0.3s ease',
+              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.05)';
+              e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+            }}
           >
-            <svg className="mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            Zurück zur Startseite
+            ← Zurück zur Startseite
           </Link>
         </div>
       </div>
