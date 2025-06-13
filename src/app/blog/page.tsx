@@ -31,36 +31,25 @@ export default async function BlogPage() {
   let error = null;
 
   try {
-    const apiUrl = 'https://api.brocki.net/api/blog-posts';
-    debugInfo += `Trying to fetch: ${apiUrl}\n`;
-    
     // API-Call zu deinem Strapi Server
-    const response = await fetch(apiUrl, {
+    const response = await fetch('https://api.brocki.net/api/blog-posts', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'User-Agent': 'CloudflarePages/1.0',
       },
       cache: 'no-store' // Immer frische Daten
     });
     
-    debugInfo += `Response status: ${response.status}\n`;
-    debugInfo += `Response headers: ${JSON.stringify(Object.fromEntries(response.headers.entries()))}\n`;
-    
     if (!response.ok) {
-      const errorText = await response.text();
-      debugInfo += `Error response body: ${errorText}\n`;
-      throw new Error(`HTTP error! status: ${response.status}, body: ${errorText}`);
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
     
     const data: StrapiResponse = await response.json();
     posts = data.data;
-    debugInfo += `Successfully loaded ${posts.length} posts\n`;
   } catch (err) {
     error = err instanceof Error ? err.message : 'Unbekannter Fehler';
     console.error('Fehler beim Laden der Posts:', err);
-    debugInfo += `Error: ${error}\n`;
   }
 
   return (
@@ -74,8 +63,6 @@ export default async function BlogPage() {
           <strong>Fehler:</strong> {error}
         </div>
       )}
-      
-     
       
       {posts.length === 0 && !error && (
         <p className="text-center text-gray-600">Keine Blog-Posts gefunden.</p>
