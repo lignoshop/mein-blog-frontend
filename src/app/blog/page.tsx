@@ -29,7 +29,6 @@ interface StrapiResponse {
 export default async function BlogPage() {
   let posts: BlogPost[] = [];
   let error = null;
-  let debugInfo = '';
 
   try {
     const apiUrl = 'https://api.brocki.net/api/blog-posts';
@@ -76,7 +75,6 @@ export default async function BlogPage() {
         </div>
       )}
       
-      {/* Debug-Informationen */}
      
       
       {posts.length === 0 && !error && (
