@@ -1,14 +1,8 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  // Edge Runtime als Standard
-  experimental: {
-    runtime: 'edge',
-  },
-  
   // Cloudflare Pages Optimierungen
   trailingSlash: false,
-  swcMinify: true,
   
   // Output für Cloudflare Pages
   output: 'export',
