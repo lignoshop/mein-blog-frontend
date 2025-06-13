@@ -3,15 +3,32 @@ import Link from 'next/link';
 
 export const runtime = 'edge';
 
+interface Category {
+  id: number;
+  name: string;
+  slug: string;
+  color: string;
+}
+
+interface Tag {
+  id: number;
+  name: string;
+  slug: string;
+}
+
 interface BlogPost {
   id: number;
   documentId: string;
   Text: string;
+  slug: string;
+  excerpt: string;
   Content: string;
   Date: string;
   createdAt: string;
   updatedAt: string;
   publishedAt: string;
+  category: Category;
+  tags: Tag[];
 }
 
 interface StrapiResponse {
@@ -31,7 +48,7 @@ export default async function BlogPage() {
   let error = null;
 
   try {
-    const response = await fetch('https://api.brocki.net/api/blog-posts', {
+    const response = await fetch('https://api.brocki.net/api/blog-posts?populate=*', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -99,34 +116,66 @@ export default async function BlogPage() {
               className="group bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/10"
             >
               {/* Article Header */}
-              <div className="p-6">
+              <div className="p-6 pb-4">
+                {/* Category & Date */}
                 <div className="flex items-center justify-between mb-4">
-                  <span className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-3 py-1 rounded-full text-xs font-medium">
-                    Artikel #{index + 1}
-                  </span>
+                  {post.category ? (
+                    <span 
+                      className="px-3 py-1 rounded-full text-xs font-medium text-white"
+                      style={{ backgroundColor: post.category.color || '#3B82F6' }}
+                    >
+                      {post.category.name}
+                    </span>
+                  ) : (
+                    <span className="bg-gray-500 text-white px-3 py-1 rounded-full text-xs font-medium">
+                      Allgemein
+                    </span>
+                  )}
                   <time className="text-sm text-gray-500 font-medium">
                     {new Date(post.Date).toLocaleDateString('de-DE')}
                   </time>
                 </div>
 
+                {/* Title */}
                 <h2 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300 leading-tight">
                   {post.Text}
                 </h2>
                 
-                <p className="text-gray-600 mb-6 leading-relaxed">
-                  {post.Content.length > 150 
+                {/* Excerpt or Content Preview */}
+                <p className="text-gray-600 mb-4 leading-relaxed">
+                  {post.excerpt || (post.Content.length > 150 
                     ? `${post.Content.substring(0, 150)}...` 
-                    : post.Content
+                    : post.Content)
                   }
                 </p>
 
+                {/* Tags */}
+                {post.tags && post.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {post.tags.slice(0, 3).map((tag) => (
+                      <span 
+                        key={tag.id}
+                        className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs font-medium hover:bg-gray-200 transition-colors"
+                      >
+                        #{tag.name}
+                      </span>
+                    ))}
+                    {post.tags.length > 3 && (
+                      <span className="text-gray-400 text-xs font-medium">
+                        +{post.tags.length - 3} mehr
+                      </span>
+                    )}
+                  </div>
+                )}
+
+                {/* Read More Button */}
                 <div className="flex items-center justify-between">
                   <button className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-2 rounded-lg font-medium transition-all duration-300 hover:from-blue-600 hover:to-purple-600 hover:shadow-lg transform hover:scale-105">
                     Weiterlesen
                   </button>
                   
                   <span className="text-sm text-gray-400 font-medium">
-                    {Math.max(1, Math.ceil(post.Content.split(' ').length / 200))} Min. Lesezeit
+                    {Math.max(1, Math.ceil((post.excerpt || post.Content).split(' ').length / 200))} Min. Lesezeit
                   </span>
                 </div>
               </div>
