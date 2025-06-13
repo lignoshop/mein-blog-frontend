@@ -146,13 +146,7 @@ export default async function BlogPage() {
         <div style={{
           display: 'grid',
           gap: '2rem',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-          '@media (min-width: 768px)': {
-            gridTemplateColumns: 'repeat(2, 1fr)'
-          },
-          '@media (min-width: 1024px)': {
-            gridTemplateColumns: 'repeat(3, 1fr)'
-          }
+          gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))'
         }}>
           {posts.map((post) => (
             <article 
