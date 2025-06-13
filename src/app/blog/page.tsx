@@ -77,10 +77,7 @@ export default async function BlogPage() {
       )}
       
       {/* Debug-Informationen */}
-      <details className="mb-6 p-4 bg-gray-100 rounded">
-        <summary className="cursor-pointer font-bold">Debug-Informationen</summary>
-        <pre className="mt-2 text-xs overflow-auto">{debugInfo}</pre>
-      </details>
+     
       
       {posts.length === 0 && !error && (
         <p className="text-center text-gray-600">Keine Blog-Posts gefunden.</p>
