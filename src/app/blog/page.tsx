@@ -2,8 +2,29 @@
 
 import { useState, useEffect } from 'react';
 
+interface BlogPost {
+  id: number;
+  documentId: string;
+  Text: string;
+  Content: string;
+  Date: string;
+  excerpt?: string;
+}
+
+interface ApiResponse {
+  data: BlogPost[];
+  meta: {
+    pagination: {
+      page: number;
+      pageSize: number;
+      pageCount: number;
+      total: number;
+    };
+  };
+}
+
 export default function BlogPage() {
-  const [posts, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [debugInfo, setDebugInfo] = useState<string[]>([]);
@@ -41,7 +62,7 @@ export default function BlogPage() {
           throw new Error(`HTTP ${response.status}: ${responseText.substring(0, 200)}`);
         }
         
-        const data = JSON.parse(responseText);
+        const data: ApiResponse = JSON.parse(responseText);
         addDebug(`✅ Parsed data: ${data.data?.length || 0} posts found`);
         setPosts(data.data || []);
         
