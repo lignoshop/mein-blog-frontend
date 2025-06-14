@@ -3,12 +3,12 @@
 import { useState, useEffect } from 'react';
 
 export default function BlogPage() {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [debugInfo, setDebugInfo] = useState([]);
+  const [error, setError] = useState<string | null>(null);
+  const [debugInfo, setDebugInfo] = useState<string[]>([]);
 
-  const addDebug = (msg) => {
+  const addDebug = (msg: string) => {
     console.log(msg);
     setDebugInfo(prev => [...prev, `${new Date().toLocaleTimeString()}: ${msg}`]);
   };
@@ -46,15 +46,15 @@ export default function BlogPage() {
         setPosts(data.data || []);
         
       } catch (err) {
-        addDebug(`❌ Error caught: ${err.message}`);
-        setError(err.message);
+        const errorMsg = err instanceof Error ? err.message : 'Unknown error';
+        addDebug(`❌ Error caught: ${errorMsg}`);
+        setError(errorMsg);
       } finally {
         setLoading(false);
         addDebug('🏁 Loading finished');
       }
     }
 
-    // Start nach kurzer Verzögerung
     const timer = setTimeout(loadPosts, 500);
     return () => clearTimeout(timer);
   }, []);
@@ -100,7 +100,7 @@ export default function BlogPage() {
         <div>
           <h3>📄 Posts Preview:</h3>
           <div style={{ backgroundColor: '#f0f0f0', padding: '10px', fontSize: '12px' }}>
-            <pre>{JSON.stringify(posts, null, 2)}</pre>
+            <pre>{JSON.stringify(posts.slice(0, 2), null, 2)}</pre>
           </div>
         </div>
       )}
