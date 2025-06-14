@@ -64,7 +64,7 @@ export default function BlogPage() {
     try {
       const response = await fetch('https://httpbin.org/json');
       addTestResult(`📡 HTTP Status: ${response.status}`);
-      const data = await response.json();
+      await response.json();
       addTestResult(`✅ HTTP Test erfolgreich`);
     } catch (err) {
       addTestResult(`❌ HTTP Fehler: ${(err as Error).message}`);
