@@ -2,7 +2,7 @@
 import { useState } from 'react';
 
 export default function BlogPage() {
-  const [testState, setTestState] = useState('Mobile JS Test funktioniert! ✅');
+  const [testState] = useState('Mobile JS Test funktioniert! ✅');
 
   return (
     <div style={{ padding: '20px', backgroundColor: '#f9fafb', minHeight: '100vh' }}>
