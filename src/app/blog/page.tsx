@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 
 export default function BlogPage() {
-  const [testState, setTestState] = useState('Mobile JS Test funktioniert! ✅');
+  const [testState] = useState('Mobile JS Test funktioniert! ✅');
   const [effectTest, setEffectTest] = useState('useEffect lädt...');
 
   useEffect(() => {
