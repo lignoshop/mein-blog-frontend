@@ -8,130 +8,102 @@ interface BlogPost {
   Text: string;
   Content: string;
   Date: string;
-  excerpt?: string;
-}
-
-interface ApiResponse {
-  data: BlogPost[];
-  meta: {
-    pagination: {
-      page: number;
-      pageSize: number;
-      pageCount: number;
-      total: number;
-    };
-  };
+  excerpt?: string | null;
 }
 
 export default function BlogPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [debugInfo, setDebugInfo] = useState<string[]>([]);
-
-  const addDebug = (msg: string) => {
-    console.log(msg);
-    setDebugInfo(prev => [...prev, `${new Date().toLocaleTimeString()}: ${msg}`]);
-  };
 
   useEffect(() => {
     async function loadPosts() {
       try {
-        addDebug('🔍 Starting API test...');
-        addDebug(`🌍 Current URL: ${window.location.href}`);
-        addDebug(`🔧 Environment: ${process.env.NODE_ENV || 'unknown'}`);
-        
-        const apiUrl = 'https://api.brocki.net/api/blog-posts';
-        addDebug(`📡 Fetching: ${apiUrl}`);
-        
-        const response = await fetch(apiUrl, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-
-        addDebug(`📊 Response status: ${response.status}`);
-        addDebug(`📊 Response ok: ${response.ok}`);
-        
-        const responseText = await response.text();
-        addDebug(`📄 Response length: ${responseText.length} chars`);
-        addDebug(`📄 Response start: ${responseText.substring(0, 100)}...`);
-        
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}: ${responseText.substring(0, 200)}`);
-        }
-        
-        const data: ApiResponse = JSON.parse(responseText);
-        addDebug(`✅ Parsed data: ${data.data?.length || 0} posts found`);
+        const response = await fetch('https://api.brocki.net/api/blog-posts');
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
         setPosts(data.data || []);
-        
       } catch (err) {
-        const errorMsg = err instanceof Error ? err.message : 'Unknown error';
-        addDebug(`❌ Error caught: ${errorMsg}`);
-        setError(errorMsg);
+        setError('Fehler beim Laden der Blog-Posts');
       } finally {
         setLoading(false);
-        addDebug('🏁 Loading finished');
       }
     }
-
-    const timer = setTimeout(loadPosts, 500);
-    return () => clearTimeout(timer);
+    setTimeout(loadPosts, 100);
   }, []);
 
   if (loading) {
     return (
-      <div style={{ padding: '20px', fontFamily: 'monospace' }}>
-        <h1>🔍 API Debug Test</h1>
-        <div>🔄 Loading...</div>
-        <div style={{ marginTop: '20px', backgroundColor: '#f5f5f5', padding: '10px', fontSize: '12px' }}>
-          {debugInfo.map((info, i) => (
-            <div key={i}>{info}</div>
-          ))}
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f9fafb' }}>
+        <div style={{ textAlign: 'center' }}>
+          <div className="loading-spinner" style={{ margin: '0 auto 16px' }}></div>
+          <p>Lade Blog-Posts...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f9fafb', padding: '16px' }}>
+        <div style={{ backgroundColor: 'white', padding: '24px', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', textAlign: 'center' }}>
+          <h2 style={{ color: '#dc2626', marginBottom: '16px' }}>Fehler</h2>
+          <p style={{ marginBottom: '16px' }}>{error}</p>
+          <button onClick={() => window.location.reload()} style={{ backgroundColor: '#3b82f6', color: 'white', padding: '8px 16px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+            Erneut versuchen
+          </button>
         </div>
       </div>
     );
   }
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'monospace' }}>
-      <h1>🔍 API Debug Results</h1>
-      
-      {error ? (
-        <div style={{ backgroundColor: '#fee', padding: '10px', border: '1px solid #fcc', marginBottom: '20px' }}>
-          <h2>❌ Error:</h2>
-          <div style={{ fontSize: '12px' }}>{error}</div>
-        </div>
-      ) : (
-        <div style={{ backgroundColor: '#efe', padding: '10px', border: '1px solid #cfc', marginBottom: '20px' }}>
-          <h2>✅ Success!</h2>
-          <div>Posts loaded: {posts.length}</div>
-        </div>
-      )}
+    <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb', padding: '48px 16px' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+        <header style={{ textAlign: 'center', marginBottom: '48px' }}>
+          <h1 style={{ fontSize: '3rem', fontWeight: 'bold', color: '#111827', marginBottom: '16px' }}>
+            🚀 Brocki.net Blog
+          </h1>
+          <p style={{ fontSize: '1.25rem', color: '#6b7280' }}>Neueste Artikel und Updates</p>
+          <p style={{ fontSize: '0.875rem', color: '#9ca3af', marginTop: '8px' }}>{posts.length} Blog-Posts gefunden</p>
+        </header>
 
-      <h3>📋 Debug Log:</h3>
-      <div style={{ backgroundColor: '#f5f5f5', padding: '10px', fontSize: '12px', marginBottom: '20px' }}>
-        {debugInfo.map((info, i) => (
-          <div key={i}>{info}</div>
-        ))}
-      </div>
-
-      {posts.length > 0 && (
-        <div>
-          <h3>📄 Posts Preview:</h3>
-          <div style={{ backgroundColor: '#f0f0f0', padding: '10px', fontSize: '12px' }}>
-            <pre>{JSON.stringify(posts.slice(0, 2), null, 2)}</pre>
+        {posts.length > 0 ? (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
+            {posts.map((post) => (
+              <article key={post.id} style={{ backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '24px', transition: 'box-shadow 0.3s ease' }}
+                onMouseEnter={(e) => { e.currentTarget.style.boxShadow = '0 10px 15px rgba(0,0,0,0.15)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)'; }}>
+                <h2 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '12px', color: '#111827' }}>
+                  {post.Text}
+                </h2>
+                {post.excerpt && (
+                  <p style={{ color: '#6b7280', marginBottom: '16px', fontSize: '0.875rem', lineHeight: '1.5' }}>
+                    {post.excerpt}
+                  </p>
+                )}
+                <div style={{ fontSize: '0.875rem', color: '#9ca3af', marginBottom: '16px' }}>
+                  📅 {new Date(post.Date).toLocaleDateString('de-DE', { year: 'numeric', month: 'long', day: 'numeric' })}
+                </div>
+                <div style={{ paddingTop: '16px', borderTop: '1px solid #f3f4f6' }}>
+                  <span style={{ fontSize: '0.75rem', color: '#d1d5db' }}>
+                    ID: {post.documentId?.slice(0, 8)}...
+                  </span>
+                </div>
+              </article>
+            ))}
           </div>
-        </div>
-      )}
-      
-      <button 
-        onClick={() => window.location.reload()}
-        style={{ padding: '10px 20px', marginTop: '20px' }}
-      >
-        🔄 Reload Test
-      </button>
+        ) : (
+          <div style={{ textAlign: 'center', padding: '48px 0' }}>
+            <div style={{ fontSize: '4rem', marginBottom: '16px' }}>📝</div>
+            <p style={{ color: '#6b7280', fontSize: '1.125rem' }}>Keine Blog-Posts vorhanden.</p>
+          </div>
+        )}
+
+        <footer style={{ textAlign: 'center', marginTop: '48px', paddingTop: '32px', borderTop: '1px solid #e5e7eb' }}>
+          <p style={{ color: '#9ca3af', fontSize: '0.875rem' }}>Powered by Strapi & Next.js • API Status: ✅ Connected</p>
+        </footer>
+      </div>
     </div>
   );
 }
