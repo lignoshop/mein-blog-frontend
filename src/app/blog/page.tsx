@@ -1,5 +1,7 @@
 import { Suspense } from 'react';
 
+export const runtime = 'edge';
+
 interface BlogPost {
   id: number;
   attributes: {
@@ -99,7 +101,7 @@ async function BlogPosts() {
         borderRadius: '8px',
         color: '#16a34a'
       }}>
-        ✅ {posts.length} Posts geladen • Server-Side Rendering 🚀
+        ✅ {posts.length} Posts geladen • Server-Side + Edge Runtime 🚀
       </div>
 
       {posts.map((post) => (
@@ -183,7 +185,7 @@ export default function BlogPage() {
       </Suspense>
       
       <div style={{ textAlign: 'center', marginTop: '40px', color: '#666' }}>
-        Server-Side Rendering • Mobile Compatible ✅
+        Server-Side + Edge Runtime • Mobile Compatible ✅
       </div>
     </div>
   );
