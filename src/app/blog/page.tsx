@@ -1,11 +1,24 @@
 'use client';
+import { useState } from 'react';
 
 export default function BlogPage() {
+  const [testState, setTestState] = useState('Mobile JS Test funktioniert! ✅');
+
   return (
     <div style={{ padding: '20px', backgroundColor: '#f9fafb', minHeight: '100vh' }}>
       <h1 style={{ textAlign: 'center', marginBottom: '30px', fontSize: '2rem' }}>
         🚀 Brocki.net Blog
       </h1>
+      
+      <div style={{ 
+        backgroundColor: 'yellow', 
+        padding: '10px', 
+        marginBottom: '20px',
+        textAlign: 'center',
+        fontSize: '1.2rem'
+      }}>
+        {testState}
+      </div>
       
       <div style={{ maxWidth: '800px', margin: '0 auto' }}>
         <div style={{ 
@@ -94,7 +107,7 @@ export default function BlogPage() {
       </div>
       
       <div style={{ textAlign: 'center', marginTop: '40px', color: '#666' }}>
-        Posts: 5 • Static Mobile Version
+        Posts: 5 • useState Test Version
       </div>
     </div>
   );
