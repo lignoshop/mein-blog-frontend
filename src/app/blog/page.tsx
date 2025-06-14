@@ -23,7 +23,8 @@ export default function BlogPage() {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const data = await response.json();
         setPosts(data.data || []);
-      } catch (err) {
+      } catch (error) {
+        console.error('Error loading posts:', error);
         setError('Fehler beim Laden der Blog-Posts');
       } finally {
         setLoading(false);
