@@ -1,8 +1,13 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function BlogPage() {
-  const [testState] = useState('Mobile JS Test funktioniert! ✅');
+  const [testState, setTestState] = useState('Mobile JS Test funktioniert! ✅');
+  const [effectTest, setEffectTest] = useState('useEffect lädt...');
+
+  useEffect(() => {
+    setEffectTest('useEffect funktioniert auch! 🚀');
+  }, []);
 
   return (
     <div style={{ padding: '20px', backgroundColor: '#f9fafb', minHeight: '100vh' }}>
@@ -18,6 +23,16 @@ export default function BlogPage() {
         fontSize: '1.2rem'
       }}>
         {testState}
+      </div>
+
+      <div style={{ 
+        backgroundColor: 'lightblue', 
+        padding: '10px', 
+        marginBottom: '20px',
+        textAlign: 'center',
+        fontSize: '1.2rem'
+      }}>
+        {effectTest}
       </div>
       
       <div style={{ maxWidth: '800px', margin: '0 auto' }}>
@@ -107,7 +122,7 @@ export default function BlogPage() {
       </div>
       
       <div style={{ textAlign: 'center', marginTop: '40px', color: '#666' }}>
-        Posts: 5 • useState Test Version
+        Posts: 5 • useEffect Test Version
       </div>
     </div>
   );
